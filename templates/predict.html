@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+            width: 100vh;
+            height: 100vh;
+        }
+        .window {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            translate: -50% -50%;
+            text-align: center;
+        }
+        button {
+            margin: 8px;
+            padding: 10px 22px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="window">
+        <h1>Choose a color</h1>
+        <input type="color" id="color">
+        <div><button id='button' onclick="submit()">Predict!</button></div>
+        <h1 id="result-disp"></h1>
+        <div id="string-result"></div>
+    </div>
+
+    <script>
+        let flags = ['Black', 'Red', 'Green', 'Blue', 'Orange', 'Yellow', 'Purple', 'White', 'Gray', 'Pink', 'Brown'];
+
+        color.oninput = () => {
+            document.body.style.backgroundColor = color.value;
+        }
+
+        function submit(flag) {
+            let c = color.value;
+            let r = c.slice(1, 3), g = c.slice(3, 5), b = c.slice(5, 7);
+            r = parseInt(r, 16);
+            g = parseInt(g, 16);
+            b = parseInt(b, 16);
+            fetch(`predict?r=${r}&g=${g}&b=${b}`).then(a => a.json()).then(res => {
+                let strres = '';
+                for (let i = 0; i < res.length; i++) strres += `${flags[i]} ${res[i]}; `;
+                document.getElementById("string-result").innerHTML = strres;
+
+                let final = flags[res.indexOf(Math.max(...res))]
+                document.getElementById('result-disp').innerHTML = final + '!!!'
+            })
+        }
+    </script>
+</body>
+</html>

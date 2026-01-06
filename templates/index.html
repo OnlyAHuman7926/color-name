@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+            width: 100vh;
+            height: 100vh;
+        }
+        .window {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            translate: -50% -50%;
+        }
+        button {
+            margin: 8px;
+            padding: 10px 22px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="window">
+        <h1>What color is it?</h1>
+        <div id="buttons">
+        </div>
+        <a href="update-csv" target="_blank">Update CSV</a>
+    </div>
+
+    <script>
+        let r, g, b;
+
+        let flags = ['Black', 'Red', 'Green', 'Blue', 'Orange', 'Yellow', 'Purple', 'White', 'Gray', 'Pink', 'Brown'];
+        for (let f of flags) {
+            let button = document.createElement("button");
+            button.style.backgroundColor = f.toLowerCase();
+            button.innerHTML = f;
+            button.onclick = () => submit(flags.indexOf(f));
+            buttons.append(button);
+        }
+
+        function submit(flag) {
+            fetch(`add-data?r=${r}&g=${g}&b=${b}&flag=${flag}`)
+            randomize();
+        }
+
+        function randomize() {
+            r = Math.floor(Math.random() * 13337 * 256 % 256);
+            g = Math.floor(Math.random() * 13337 * 256 % 256);
+            b = Math.floor(Math.random() * 13337 * 256 % 256);
+            document.body.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+        }
+        randomize();
+    </script>
+</body>
+</html>
